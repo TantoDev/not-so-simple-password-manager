@@ -1,6 +1,6 @@
 # 🔐 Not-So-Simple Password Manager
 
-This is a simple password manager I built to get more practice with **Object-Oriented Programming** and basic logic.
+As you can see this is a not so simple password manager🤷🏾‍♂️ I built to get more practice with **Object-Oriented Programming** and basic logic.
 
 
 ## ✨ Features
