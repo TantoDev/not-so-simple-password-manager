@@ -61,7 +61,7 @@ class Vault:
 			search_term = self.safe_input("\n Enter a search term: ")
 			for cred in self.vault:
 				if search_term.lower() in cred.title.lower() or search_term.lower() in cred.name:
-					print(f" {cred.title} \n Username: {cred.name} \n Password: {cred.password}")
+					print(f"\n {cred.title} \n Username: {cred.name} \n Password: {cred.password}")
 					found = True
 			if not found:
 				print("\n The entry doesn't exist in your vault")
@@ -103,11 +103,6 @@ class Vault:
 		with open(self.filename,'w') as f:
 			json.dump(data,f)
 
-# saves the master password
-	def savelock(self):
-		with open(self.masterfile, 'w') as f:
-			json.dump(self.mastervault,f)
-
 # retrives saved data			
 	def loadfile(self):
 		try:
@@ -116,6 +111,11 @@ class Vault:
 				self.vault = [(Credential.from_dict(item)) for item in data]
 		except (FileNotFoundError, json.JSONDecodeError, TypeError):
 			self.vault = []
+			
+# saves the master password
+	def savelock(self):
+		with open(self.masterfile, 'w') as f:
+			json.dump(self.mastervault,f)
 
 # retrieves master password for authentication	
 	def loadlock(self):
@@ -124,7 +124,8 @@ class Vault:
 				self.mastervault = json.load(f)
 		except (FileNotFoundError, json.JSONDecodeError, TypeError):
 			self.mastervault = {}
-			
+
+# menu interface			
 	def display_menu(self):
 		menu_text = '''
  Simple Password Manager~©
@@ -135,7 +136,6 @@ class Vault:
  5. Clear Vault
  6. Exit
 '''
-# menu interface
 
 		while True:
 			try:
@@ -157,7 +157,7 @@ class Vault:
 					print("\nInvalid input!")						
 			except ValueError:
 				print("Enter a numerical value")
-			
+# runs if first time running the program
 	def register(self):
 		self.mastervault['name'] = self.safe_input("\n Enter your name: ")
 		self.savelock()
@@ -167,35 +167,58 @@ class Vault:
 			self.mastervault['password'] = self.safe_input("\n Confirm Password: ")
 			if password == self.mastervault['password']:
 				self.savelock()
-				print("\n Password set successfully!")						
-				return True	
+				print("\n Password set successfully!")
+				while True:
+					reply = self.safe_input("\n Enter master password to continue: ")
+					if reply == self.mastervault['password']:
+						print("\n Verified!")
+						self.display_menu()
+						return 	
+					else:
+						print(f"\n Wrong password! Try again: ")
 			else:
 				print("\n Passwords dont match! Try again.")
-			return False
 
-	def resume(self):	
+# runs for every other time
+	def resume(self):
+		set_password = True
+		print(f"\n Welcome back {self.mastervault['name']}!" )	
 		while True:
-			reply = self.safe_input("\n To access your Password Vault\n Enter master password: ")
-			if len(self.mastervault) == 2:
-						
+			reply = self.safe_input("\n Enter master password to continue: ")
+			if self.mastervault.get('password'):			
 				if reply == self.mastervault['password']:
 					print("\n Verified!")
 					self.display_menu()
-					return True
+					return 
 				else:
 					print(f"\n Wrong password! Try again: ")
 			else:
 				print("\n Oops! seems like you haven't yet created your master password.\n No worries, try creating one now.")
-				self.register()
-							
-	def lock(self):
-		if 'name' not in self.mastervault:
-			  self.register()
-		print(f"\n Welcome back {self.mastervault['name']}!" )
-		self.resume()
+				while True:
+					password = self.safe_input("\n Enter your Master Password: ")
+					self.mastervault['password'] = self.safe_input("\n Confirm Password: ")
+					if password == self.mastervault['password']:
+						self.savelock()
+						print("\n Password set successfully!")
+						while True:
+							reply = self.safe_input("\n Enter your master password to continue: ")
+							if reply == self.mastervault['password']:
+								print("\n Verified!")
+								self.display_menu()
+								return 
+					else:
+						print("\n Passwords dont match! Try again.")
+
+# Runs register() on first run, otherwise resume().
+	def run(self):
+		if not self.mastervault:
+			self.register()
+		else:
+			self.resume()
+	
 							
 myVault = Vault()
-myVault.lock()	
+myVault.run()	
 
-
+		
 	
