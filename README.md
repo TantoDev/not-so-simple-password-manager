@@ -1,44 +1,30 @@
 # 🔐 Not-So-Simple Password Manager
 
-As you can see this is a not so simple password manager🤷🏾‍♂️ I built to get more practice with **Object-Oriented Programming** and basic logic.
-
+A simple password manager built to sharpen my Object-Oriented Python skills and practice basic logic.
 
 ## ✨ Features
 
-- Add new credentials (title, username, password)  
-- View all saved credentials  
-- Search by title or username  
-- Delete credentials  
-- Data stored persistently in `vault.json` using JSON format  
-- Basic error handling for corrupted or missing files  
+- Add, view, search, and delete credentials  
+- Clear all credentials with confirmation  
+- Data saved persistently in `vault.json` (JSON format)  
+- Master password stored separately in `mastervault.json` for simple authentication  
+- Handles missing/corrupted files without crashing  
+- Prevents empty user inputs  
 
-The `Credential` class represents each saved login, and `Vault` handles all storage logic.  
-I used JSON to serialize and deserialize the data instead of saving Python objects directly, lightweight, readable, and beginner friendly.  
-Also added basic handling for when the vault file is missing or broken, so it doesn’t crash.
-
+`Credential` manages each saved login, `Vault` handles storage and interaction.
 
 ## 📖 Backstory
 
-I found this project **really exciting**, even though I ran into errors *literally all the way*.  
-Made it a personal challenge to **debug things myself** and only fall back to AI when totally stuck — just to build that dev muscle.  
-Not gonna lie, it was time consuming and yeah... I definitely broke some stuff along the way 😂
+I took this on as a personal challenge — debugging and building it mostly on my own.
 
-One tricky part was storing data.  
-I started off trying to save actual Python objects, but turns out **JSON doesn't like that**.  
-So I had to figure out how to convert the data into a format JSON understands and then reconstruct it later.  
-That took me a minute... okay, an hour 😅.  
-But when everything finally clicked and ran smoothly ✅ .. **that hit felt amazing** 🤓✨
+I also added a master password system to keep things a bit secure.
 
-I was planning to add encryption, a cleaner menu, and better error prompts but my battery died mid-session and well... priorities 😅
-
+I’m still planning to improve encryption, clean up the menu, and make error messages better. I'll do that when I'm less annoyed. Just happy it works now. Messy code? I know.
 
 ## 🛠️ How to Run
 
-Just run the script in any **Python 3** environment.  
-It’ll automatically create a `vault.json` file in the same directory to store your saved data.
-
+Run it with Python 3. The program will create `vault.json` and `mastervault.json` automatically to store your data.
 
 ## 💬 Final Note
 
-Feel free to fork, modify, break, or upgrade the project.  
-It’s raw and simple, just how learning projects should be.
+This is a raw learning project. Feel free to fork it, improve it, or just play around.
